@@ -1,5 +1,6 @@
-package com.queiroz.flashcards.appuser;
+package com.queiroz.flashcards.repository.user;
 
+import com.queiroz.flashcards.model.user.AppUser;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
