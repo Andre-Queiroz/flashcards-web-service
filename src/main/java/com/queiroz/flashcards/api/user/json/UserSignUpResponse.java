@@ -1,6 +1,6 @@
-package com.queiroz.flashcards.api.user.response;
+package com.queiroz.flashcards.api.user.json;
 
-import com.queiroz.flashcards.model.user.AppUser;
+import com.queiroz.flashcards.model.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -17,10 +17,10 @@ public class UserSignUpResponse {
     private String id;
     private String name;
 
-    public static UserSignUpResponse toUserSignUpResponse(AppUser appUser) {
+    public static UserSignUpResponse toUserSignUpResponse(User user) {
         return UserSignUpResponse.builder()
-                .id(appUser.getId())
-                .name(appUser.getName())
+                .id(user.getId())
+                .name(user.getName())
                 .build();
     }
 

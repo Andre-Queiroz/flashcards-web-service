@@ -23,7 +23,7 @@ import java.util.Collections;
 @EqualsAndHashCode
 @NoArgsConstructor
 @Entity
-public class AppUser implements UserDetails {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(generator = "uuid")
@@ -37,18 +37,18 @@ public class AppUser implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private AppUserRole appUserRole = AppUserRole.USER;
+    private UserRole userRole = UserRole.USER;
 
-    public AppUser(String name, String email, String password, AppUserRole appUserRole) {
+    public User(String name, String email, String password, UserRole userRole) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.appUserRole = appUserRole;
+        this.userRole = userRole;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(appUserRole.name()));
+        return Collections.singletonList(new SimpleGrantedAuthority(userRole.name()));
     }
 
     @Override

@@ -1,8 +1,8 @@
-package com.queiroz.flashcards.api.user.controller;
+package com.queiroz.flashcards.api.user;
 
-import com.queiroz.flashcards.api.user.request.UserSignUpRequest;
-import com.queiroz.flashcards.api.user.response.UserSignUpResponse;
-import com.queiroz.flashcards.service.user.UserSignUpService;
+import com.queiroz.flashcards.api.user.json.UserSignUpRequest;
+import com.queiroz.flashcards.api.user.json.UserSignUpResponse;
+import com.queiroz.flashcards.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/user")
 public class UserController {
 
-    private final UserSignUpService signUpService;
+    private final UserService userService;
 
     @PostMapping("/signup")
     public ResponseEntity<UserSignUpResponse> signUp(@RequestBody @Valid final UserSignUpRequest signUpRequest) {
         return ResponseEntity.ok(
                 UserSignUpResponse.toUserSignUpResponse(
-                        signUpService.signUpUser(signUpRequest)));
+                        userService.signUpUser(UserSignUpRequest.toUser(signUpRequest))));
     }
 }

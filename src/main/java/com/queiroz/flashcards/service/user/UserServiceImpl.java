@@ -1,8 +1,8 @@
 package com.queiroz.flashcards.service.user;
 
 import com.queiroz.flashcards.model.exception.UserAlreadyExistsException;
-import com.queiroz.flashcards.model.user.AppUser;
-import com.queiroz.flashcards.repository.user.AppUserRepository;
+import com.queiroz.flashcards.model.user.User;
+import com.queiroz.flashcards.repository.user.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,8 +12,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class AppUserService implements UserDetailsService {
-    private final AppUserRepository appUserRepository;
+public class UserServiceImpl implements UserService, UserDetailsService {
+
+    private final UserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -22,13 +23,12 @@ public class AppUserService implements UserDetailsService {
                 new UsernameNotFoundException(String.format("User with email %s not found.", email)));
     }
 
-    public AppUser signUpUser(AppUser appUser) {
-        appUserRepository.findByEmail(appUser.getEmail()).ifPresent(user -> {
+    public User signUpUser(User user) {
+        appUserRepository.findByEmail(user.getEmail()).ifPresent(retrievedUser -> {
             throw new UserAlreadyExistsException("Email already taken.");
         });
-
-        appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
-
-        return appUserRepository.save(appUser);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return appUserRepository.save(user);
     }
+
 }
