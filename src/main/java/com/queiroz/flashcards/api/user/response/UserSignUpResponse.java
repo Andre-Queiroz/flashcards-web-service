@@ -7,8 +7,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.util.UUID;
-
 @Getter
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -16,7 +14,7 @@ import java.util.UUID;
 @Builder
 public class UserSignUpResponse {
 
-    private UUID id;
+    private String id;
     private String name;
 
     public static UserSignUpResponse toUserSignUpResponse(AppUser appUser) {
