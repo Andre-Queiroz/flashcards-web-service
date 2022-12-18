@@ -17,7 +17,7 @@ public class UserSignUpRequest {
     @NotBlank
     private String password;
 
-    public static User toUser(UserSignUpRequest request) {
+    public static User toUser(final UserSignUpRequest request) {
         return new User(
                 request.getName(),
                 request.getEmail(),

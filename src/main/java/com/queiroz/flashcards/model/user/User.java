@@ -1,6 +1,8 @@
 package com.queiroz.flashcards.model.user;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.queiroz.flashcards.model.flashcard.Flashcard;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -9,10 +11,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,11 +22,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @Entity
 public class User implements UserDetails {
@@ -43,8 +46,9 @@ public class User implements UserDetails {
     @NotNull
     private UserRole userRole = UserRole.USER;
 
-    @OneToMany(mappedBy = "user")
-    private Set<Flashcard> flashcards;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Flashcard> flashcards = new HashSet<>();
 
     public User(String name, String email, String password, UserRole userRole) {
         this.name = name;
@@ -86,5 +90,18 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+        return id != null && Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

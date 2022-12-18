@@ -17,7 +17,7 @@ public class UserSignUpResponse {
     private String id;
     private String name;
 
-    public static UserSignUpResponse toUserSignUpResponse(User user) {
+    public static UserSignUpResponse toUserSignUpResponse(final User user) {
         return UserSignUpResponse.builder()
                 .id(user.getId())
                 .name(user.getName())
