@@ -1,5 +1,6 @@
 package com.queiroz.flashcards.model.flashcard;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.queiroz.flashcards.model.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,13 +12,17 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 public class Flashcard {
 
@@ -27,7 +32,8 @@ public class Flashcard {
     private String id;
 
     @NotNull
-    @ManyToOne()
+    @JsonBackReference
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -47,4 +53,26 @@ public class Flashcard {
     @NotNull
     private Integer hits;
 
+    public Flashcard(User user, String front, String back, LocalDateTime lastView, Proficiency proficiency,
+                     Integer hits) {
+        this.user = user;
+        this.front = front;
+        this.back = back;
+        this.lastView = lastView;
+        this.proficiency = proficiency;
+        this.hits = hits;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Flashcard flashcard = (Flashcard) o;
+        return id != null && Objects.equals(id, flashcard.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
